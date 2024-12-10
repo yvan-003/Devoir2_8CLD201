@@ -35,4 +35,3 @@ Avant de commencer, assurez-vous d'avoir :
 - **Clarté** : La structure est intuitive et facile à suivre.
 - **Documentation technique** : Chaque étape clé du projet est expliquée.
 - **Collaboratif** : Mention des contributeurs.
-- **Professionnel** : Utilisation d'une licence et de bonnes pratiques.
