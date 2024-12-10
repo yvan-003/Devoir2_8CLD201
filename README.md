@@ -28,7 +28,7 @@ Avant de commencer, assurez-vous d'avoir :
 - SEKA paul yvan : Gestion du projet, organisation du Board.
 - [Nom du membre 2] : Développement de la première Function App.
 - [Nom du membre 3] : Développement de la deuxième Function App.
-- [Nom du membre 4] : Configuration des pipelines CI/CD.
+- [Dona Peniel HOUNHOUI] : Configuration des pipelines CI/CD.
 
 
 ### Points forts de ce README :
