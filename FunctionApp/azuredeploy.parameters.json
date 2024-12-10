@@ -1,0 +1,45 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "subscriptionId": {
+      "value": "dde5eab5-8f95-425b-b698-3a605a01ad88"
+    },
+    "name": {
+      "value": "appfunctiondevoir2"
+    },
+    "location": {
+      "value": "East US"
+    },
+    "storageBlobContainerName": {
+      "value": "app-package-appfunctiondevoir2-ae9750c"
+    },
+    "storageAccountName": {
+      "value": "rgdevoir28600"
+    },
+    "sku": {
+      "value": "FlexConsumption"
+    },
+    "skuCode": {
+      "value": "FC1"
+    },
+    "workerSize": {
+      "value": "0"
+    },
+    "workerSizeId": {
+      "value": "0"
+    },
+    "numberOfWorkers": {
+      "value": "1"
+    },
+    "hostingPlanName": {
+      "value": "ASP-RGDevoir2-9c2d"
+    },
+    "serverFarmResourceGroup": {
+      "value": "RG_Devoir_2"
+    },
+    "alwaysOn": {
+      "value": false
+    }
+  }
+}
