@@ -25,10 +25,10 @@ Avant de commencer, assurez-vous d'avoir :
 
 ## Contributeurs
 
-SEKA paul yvan : Gestion du projet, organisation du Board.
-[Nom du membre 2] : Développement de la première Function App.
-[Nom du membre 3] : Développement de la deuxième Function App.
-[Nom du membre 4] : Configuration des pipelines CI/CD.
+- SEKA paul yvan : Gestion du projet, organisation du Board.
+- [Nom du membre 2] : Développement de la première Function App.
+- [Nom du membre 3] : Développement de la deuxième Function App.
+- [Nom du membre 4] : Configuration des pipelines CI/CD.
 
 
 ### Points forts de ce README :
