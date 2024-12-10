@@ -22,3 +22,17 @@ Avant de commencer, assurez-vous d'avoir :
    - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
    - [Python 3.x](https://www.python.org/downloads/) avec les bibliothèques nécessaires.
    - [Git](https://git-scm.com/).
+
+## Contributeurs
+
+SEKA paul yvan : Gestion du projet, organisation du Board.
+[Nom du membre 2] : Développement de la première Function App.
+[Nom du membre 3] : Développement de la deuxième Function App.
+[Nom du membre 4] : Configuration des pipelines CI/CD.
+
+
+### Points forts de ce README :
+- **Clarté** : La structure est intuitive et facile à suivre.
+- **Documentation technique** : Chaque étape clé du projet est expliquée.
+- **Collaboratif** : Mention des contributeurs.
+- **Professionnel** : Utilisation d'une licence et de bonnes pratiques.
