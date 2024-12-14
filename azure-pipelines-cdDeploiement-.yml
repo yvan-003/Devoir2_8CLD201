@@ -1,0 +1,52 @@
+trigger:
+- main  # Déclenchement sur la branche 'main'
+
+pool:
+  name: 'default'  # Utilise le pool par défaut
+
+variables:
+  azureSubscription: 'NomDuServiceAzure'
+  storageResourceGroup: 'RG_Devoir_2'
+  functionAppResourceGroup: 'RG_Devoir_2'
+  storageLocation: 'canadacentral'
+  functionAppLocation: 'East US'
+
+steps:
+# Étape 1 : Création des groupes de ressources
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: $(azureSubscription)
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      echo "Création du groupe de ressources pour le Storage Account..."
+      az group exists --name $(storageResourceGroup) || az group create --name $(storageResourceGroup) --location $(storageLocation)
+
+      echo "Création du groupe de ressources pour la Function App..."
+      az group exists --name $(functionAppResourceGroup) || az group create --name $(functionAppResourceGroup) --location $(functionAppLocation)
+
+# Étape 2 : Déploiement du Storage Account
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: $(azureSubscription)
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      echo "Déploiement du Storage Account..."
+      az deployment group create \
+        --resource-group $(storageResourceGroup) \
+        --template-file storage-account/azuredeploy.json \
+        --parameters @storage-account/azuredeploy.parameters.json
+
+# Étape 3 : Déploiement de la Function App
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: $(azureSubscription)
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      echo "Déploiement de la Function App..."
+      az deployment group create \
+        --resource-group $(functionAppResourceGroup) \
+        --template-file function-app/azuredeploy.json \
+        --parameters @function-app/azuredeploy.parameters.json
