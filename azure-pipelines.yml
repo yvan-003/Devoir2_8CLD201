@@ -8,7 +8,7 @@ steps:
 # Étape 1 : Validation des fichiers ARM Template (Syntaxe JSON)
 - task: AzureCLI@2
   inputs:
-    azureSubscription: 'NomDuServiceAzure'  # Nom du service de connexion Azure
+
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: |
