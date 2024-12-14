@@ -5,7 +5,7 @@ pool:
   name: 'default'  # Utilise le pool par défaut
 
 variables:
-  azureSubscription: 'NomDuServiceAzure'
+  
   storageResourceGroup: 'RG_Devoir_2'
   functionAppResourceGroup: 'RG_Devoir_2'
   storageLocation: 'canadacentral'
@@ -15,7 +15,7 @@ steps:
 # Étape 1 : Création des groupes de ressources
 - task: AzureCLI@2
   inputs:
-    azureSubscription: $(azureSubscription)
+    
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: |
@@ -28,7 +28,7 @@ steps:
 # Étape 2 : Déploiement du Storage Account
 - task: AzureCLI@2
   inputs:
-    azureSubscription: $(azureSubscription)
+    
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: |
@@ -41,7 +41,7 @@ steps:
 # Étape 3 : Déploiement de la Function App
 - task: AzureCLI@2
   inputs:
-    azureSubscription: $(azureSubscription)
+    
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: |
