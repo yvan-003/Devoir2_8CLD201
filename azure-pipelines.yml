@@ -1,33 +1,32 @@
 trigger:
-- main  # Déclenchement du pipeline à chaque modification de la branche 'main'
+- main  # Déclenchement sur la branche 'main'
 
 pool:
-  name: 'default'  # Utilisation du pool d'agents par défaut
-
-variables:
-  azureSubscription: 'AzureServiceConnection'  # Nom du service de connexion Azure dans Azure Devops
-  resourceGroup: 'resourceGroup'  # Nom du groupe de ressources à créer
-  location: 'canadacentral'  # Région pour le groupe de ressources
+  name: 'default'  # Utilise le pool par défaut
 
 steps:
-# Étape 1 : Créer le Resource Group (si nécessaire)
+# Étape 1 : Validation des fichiers ARM Template (Syntaxe JSON)
 - task: AzureCLI@2
   inputs:
-    azureSubscription: $(azureSubscription)
+    azureSubscription: 'NomDuServiceAzure'  # Nom du service de connexion Azure
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: |
-      echo "Création du groupe de ressources si nécessaire..."
-      az group create --name $(resourceGroup) --location $(location)
+      echo "Validation de la syntaxe des ARM templates..."
+      az deployment group validate \
+        --resource-group RG_Devoir_2 \
+        --template-file storage-account/azuredeploy.json \
+        --parameters @storage-account/azuredeploy.parameters.json
 
-# Étape 2 : Déployer le Storage Account avec ARM Template
-- task: AzureResourceManagerTemplateDeployment@3
+      az deployment group validate \
+        --resource-group RG_Devoir_2 \
+        --template-file function-app/azuredeploy.json \
+        --parameters @function-app/azuredeploy.parameters.json
+
+# Étape 2 : Compilation des fichiers ARM Template (Optionnel)
+- task: Bash@3
   inputs:
-    deploymentScope: 'Resource Group'
-    azureResourceManagerConnection: $(azureSubscription)
-    resourceGroupName: $(resourceGroup)
-    location: $(location)
-    templateLocation: 'Linked artifact'
-    csmFile: 'azuredeploy.json'  # Chemin vers votre fichier de template JSON
-    csmParametersFile: 'azuredeploy.parameters.json'  # Chemin vers votre fichier de paramètres JSON
-    deploymentMode: 'Incremental'  # Déploiement incrémental pour ne pas supprimer les ressources existantes
+    targetType: 'inline'
+    script: |
+      echo "Compilation ou minification des fichiers ARM templates..."
+      # Ajoutez des scripts spécifiques pour modifier ou valider davantage vos fichiers JSON si nécessaire.
