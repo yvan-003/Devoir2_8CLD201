@@ -1,5 +1,5 @@
 trigger:
-- main  # Déclenchement sur la branche 'main'
+- none  # Déclenchement sur la branche 'main'
 
 pool:
   name: 'default'  # Utilise le pool par défaut
