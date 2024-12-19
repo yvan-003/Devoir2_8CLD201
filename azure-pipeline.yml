@@ -8,16 +8,33 @@ trigger:
 
 pool: "default"
 
-steps:
-- task: AzureResourceManagerTemplateDeployment@3
-  inputs:
-    deploymentScope: 'Resource Group'
-    azureResourceManagerConnection: 'Abo Devoir 2(dde5eab5-8f95-425b-b698-3a605a01ad88)'
-    subscriptionId: 'dde5eab5-8f95-425b-b698-3a605a01ad88'
-    action: 'Create Or Update Resource Group'
-    resourceGroupName: 'RG_Devoir_2'
-    location: 'Canada Central'
-    templateLocation: 'Linked artifact'
-    csmFile: '$(Build.SourcesDirectory)\StorageAccount\azuredeploy.json'
-    csmParametersFile: '$(Build.SourcesDirectory)\StorageAccount\azuredeploy.parameters.json'
-    deploymentMode: 'Incremental'
+jobs:
+- job : StorageAccount
+  steps:
+  - bash: echo "Storage Account"
+  - task: AzureResourceManagerTemplateDeployment@3
+    inputs:
+      deploymentScope: 'Resource Group'
+      azureResourceManagerConnection: 'Abo Devoir 2(dde5eab5-8f95-425b-b698-3a605a01ad88)'
+      subscriptionId: 'dde5eab5-8f95-425b-b698-3a605a01ad88'
+      action: 'Create Or Update Resource Group'
+      resourceGroupName: 'RG_Devoir_2'
+      location: 'Canada Central'
+      templateLocation: 'Linked artifact'
+      csmFile: '$(Build.SourcesDirectory)\StorageAccount\azuredeploy.json'
+      csmParametersFile: '$(Build.SourcesDirectory)\StorageAccount\azuredeploy.parameters.json'
+      deploymentMode: 'Incremental'
+  - task: AzureResourceManagerTemplateDeployment@3
+    inputs:
+      deploymentScope: 'Resource Group'
+      azureResourceManagerConnection: 'Abo Devoir 2(dde5eab5-8f95-425b-b698-3a605a01ad88)'
+      subscriptionId: 'dde5eab5-8f95-425b-b698-3a605a01ad88'
+      action: 'Create Or Update Resource Group'
+      resourceGroupName: 'RG_Devoir_2'
+      location: 'Canada Central'
+      templateLocation: 'Linked artifact'
+      csmFile: '$(Build.SourcesDirectory)\FunctionApp\azuredeploy.json'
+      csmParametersFile: '$(Build.SourcesDirectory)\FunctionApp\azuredeploy.parameters.json'
+      deploymentMode: 'Incremental'
+      
+  
