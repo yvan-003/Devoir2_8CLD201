@@ -11,7 +11,7 @@ pool: "default"
 jobs:
 - job : StorageAccount
   steps:
-  - bash: echo "Storage Account"
+  # - bash: echo "Storage Account"
   - task: AzureResourceManagerTemplateDeployment@3
     inputs:
       deploymentScope: 'Resource Group'
