@@ -6,22 +6,22 @@
       "value": "dde5eab5-8f95-425b-b698-3a605a01ad88"
     },
     "name": {
-      "value": "appfunctiondevoir2"
+      "value": "myfunctionappdevoir2"
     },
     "location": {
-      "value": "East US"
+      "value": "Canada Central"
     },
-    "storageBlobContainerName": {
-      "value": "app-package-appfunctiondevoir2-ae9750c"
+    "ftpsState": {
+      "value": "FtpsOnly"
     },
     "storageAccountName": {
-      "value": "rgdevoir28600"
+      "value": "8cld201storagedevoir2"
     },
     "sku": {
-      "value": "FlexConsumption"
+      "value": "Dynamic"
     },
     "skuCode": {
-      "value": "FC1"
+      "value": "Y1"
     },
     "workerSize": {
       "value": "0"
@@ -32,8 +32,14 @@
     "numberOfWorkers": {
       "value": "1"
     },
+    "use32BitWorkerProcess": {
+      "value": false
+    },
+    "netFrameworkVersion": {
+      "value": "v8.0"
+    },
     "hostingPlanName": {
-      "value": "ASP-RGDevoir2-9c2d"
+      "value": "ASP-RGDevoir2-ab87"
     },
     "serverFarmResourceGroup": {
       "value": "RG_Devoir_2"
