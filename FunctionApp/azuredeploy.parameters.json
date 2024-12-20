@@ -6,7 +6,7 @@
       "value": "dde5eab5-8f95-425b-b698-3a605a01ad88"
     },
     "name": {
-      "value": "myfunctionappdevoir2"
+      "value": "lefunctionappdevoir2"
     },
     "location": {
       "value": "Canada Central"
@@ -15,7 +15,7 @@
       "value": "FtpsOnly"
     },
     "storageAccountName": {
-      "value": "8cld201storagedevoir2"
+      "value": "rgdevoir2a659"
     },
     "sku": {
       "value": "Dynamic"
@@ -39,7 +39,7 @@
       "value": "v8.0"
     },
     "hostingPlanName": {
-      "value": "ASP-RGDevoir2-ab87"
+      "value": "ASP-RGDevoir2-9b52"
     },
     "serverFarmResourceGroup": {
       "value": "RG_Devoir_2"

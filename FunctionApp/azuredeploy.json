@@ -49,7 +49,7 @@
     }
   },
   "variables": {
-    "contentShare": "myfunctionappdevoir2bf32"
+    "contentShare": "lefunctionappdevoir296ca"
   },
   "resources": [
     {
@@ -59,11 +59,12 @@
       "kind": "functionapp",
       "location": "[parameters('location')]",
       "tags": {
-        "hidden-link: /app-insights-resource-id": "/subscriptions/dde5eab5-8f95-425b-b698-3a605a01ad88/resourceGroups/RG_Devoir_2/providers/Microsoft.Insights/components/myfunctionappdevoir2"
+        "hidden-link: /app-insights-resource-id": "/subscriptions/dde5eab5-8f95-425b-b698-3a605a01ad88/resourceGroups/RG_Devoir_2/providers/Microsoft.Insights/components/lefunctionappdevoir2"
       },
       "dependsOn": [
-        "microsoft.insights/components/myfunctionappdevoir2",
-        "[concat('Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]"
+        "microsoft.insights/components/lefunctionappdevoir2",
+        "[concat('Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]",
+        "[concat('Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]"
       ],
       "properties": {
         "name": "[parameters('name')]",
@@ -83,15 +84,15 @@
             },
             {
               "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
-              "value": "[reference('microsoft.insights/components/myfunctionappdevoir2', '2015-05-01').ConnectionString]"
+              "value": "[reference('microsoft.insights/components/lefunctionappdevoir2', '2015-05-01').ConnectionString]"
             },
             {
               "name": "AzureWebJobsStorage",
-              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageAccountName'),';AccountKey=',listKeys(resourceId('dde5eab5-8f95-425b-b698-3a605a01ad88','RG_Devoir_2','Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2019-06-01').keys[0].value,';EndpointSuffix=','core.windows.net')]"
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2019-06-01').keys[0].value,';EndpointSuffix=','core.windows.net')]"
             },
             {
               "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
-              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageAccountName'),';AccountKey=',listKeys(resourceId('dde5eab5-8f95-425b-b698-3a605a01ad88','RG_Devoir_2','Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2019-06-01').keys[0].value,';EndpointSuffix=','core.windows.net')]"
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2019-06-01').keys[0].value,';EndpointSuffix=','core.windows.net')]"
             },
             {
               "name": "WEBSITE_CONTENTSHARE",
@@ -160,13 +161,11 @@
     },
     {
       "apiVersion": "2020-02-02-preview",
-      "name": "myfunctionappdevoir2",
+      "name": "lefunctionappdevoir2",
       "type": "microsoft.insights/components",
       "location": "canadacentral",
       "tags": {},
-      "dependsOn": [
-        "newWorkspaceTemplate"
-      ],
+      "dependsOn": [],
       "properties": {
         "ApplicationId": "[parameters('name')]",
         "Request_Source": "IbizaWebAppExtensionCreate",
@@ -176,28 +175,44 @@
       }
     },
     {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2021-04-01",
-      "name": "newWorkspaceTemplate",
-      "resourceGroup": "DefaultResourceGroup-CCAN",
-      "subscriptionId": "[parameters('subscriptionId')]",
+      "apiVersion": "2022-05-01",
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[parameters('storageAccountName')]",
+      "dependsOn": [],
+      "location": "[parameters('location')]",
+      "tags": {},
+      "sku": {
+        "name": "Standard_LRS"
+      },
       "properties": {
-        "mode": "Incremental",
-        "template": {
-          "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-          "contentVersion": "1.0.0.0",
-          "parameters": {},
-          "variables": {},
-          "resources": [
-            {
-              "apiVersion": "2020-08-01",
-              "name": "DefaultWorkspace-dde5eab5-8f95-425b-b698-3a605a01ad88-CCAN",
-              "type": "Microsoft.OperationalInsights/workspaces",
-              "location": "canadacentral",
-              "properties": {}
-            }
-          ]
-        }
+        "supportsHttpsTrafficOnly": true,
+        "minimumTlsVersion": "TLS1_2",
+        "defaultToOAuthAuthentication": true,
+        "allowBlobPublicAccess": false
+      }
+    },
+    {
+      "apiVersion": "2021-05-01-preview",
+      "name": "[concat(parameters('storageAccountName'), '-sa-blob-logs')]",
+      "type": "microsoft.insights/diagnosticSettings",
+      "scope": "[concat('Microsoft.Storage/storageAccounts/', parameters('storageAccountName'), '/blobServices/default')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
+      ],
+      "properties": {
+        "workspaceId": "/subscriptions/dde5eab5-8f95-425b-b698-3a605a01ad88/resourceGroups/DefaultResourceGroup-CCAN/providers/Microsoft.OperationalInsights/workspaces/DefaultWorkspace-dde5eab5-8f95-425b-b698-3a605a01ad88-CCAN",
+        "logs": [
+          {
+            "category": "StorageWrite",
+            "enabled": true
+          }
+        ],
+        "metrics": [
+          {
+            "category": "Transaction",
+            "enabled": true
+          }
+        ]
       }
     }
   ]
