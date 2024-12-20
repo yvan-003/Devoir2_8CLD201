@@ -8,6 +8,27 @@ trigger:
 
 pool: "default"
 
+variables:
+  - name: resourceGroupName
+    value: 'RG_Devoir_2'
+  - name: rgLocation
+    value: 'Canada Central'
+    # Project folder name for the Infrastructure
+  #- name: AzureAppInfrastructure
+  #  value: 'InfrastructureBlob'
+    # Project folder name for the Azure Function
+  - name: AzureAppFunction
+    value: 'function'
+    # Name of the Infrastructure Resource (Blob)
+  #- name: AzureBlob
+  #  value: 'blobfunctionguro'
+  #- name: AzureBlobContainerName
+  #  value: 'blob'
+  - name: AzureFunctionAppName
+    value: 'myfunctionappdevoir2'
+  #- name: BlobString
+  #  value: 'patate'
+
 jobs:
 - job : StorageAccount
   steps:
@@ -38,3 +59,63 @@ jobs:
       deploymentMode: 'Incremental'
       
   
+- job: FunctionBuild
+  displayName: Function Build
+
+  steps:
+  - task: DotNetCoreCLI@2
+    displayName: Restore Project
+    inputs:
+      command: 'restore'
+      projects: '$(Build.SourcesDirectory)/$(AzureAppFunction)/*.csproj'
+      
+  - task: DotNetCoreCLI@2
+    displayName: Build Azure Function
+    inputs:
+      command: 'build'
+      projects: '$(Build.SourcesDirectory)/$(AzureAppFunction)/*.csproj'
+      arguments: '--configuration Release --output $(Build.BinariesDirectory)'
+
+  - task: DotNetCoreCLI@2
+    displayName: Publish Azure Function
+    inputs:
+      command: 'publish'
+      projects: '$(Build.SourcesDirectory)/$(AzureAppFunction)/*.csproj'
+      arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)'
+      publishWebProjects: false
+      zipAfterPublish: true
+      modifyOutputPath: false
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: 'drop'
+      publishLocation: 'Container'
+
+- job: FunctionDeploy
+  displayName: Function Deployment
+  dependsOn: FunctionBuild
+
+  variables: 
+    #blobstring: $[ stageDependencies.Infra.Deploy.outputs['AssignKey.BlobString'] ]
+    blobstring: ${blobconnectionstring}
+  steps:
+  - checkout: none
+  - task: DownloadBuildArtifacts@1
+    inputs:
+      buildType: 'current'
+      downloadType: 'single'
+      artifactName: 'drop'
+      downloadPath: '$(System.ArtifactsDirectory)'
+      cleanDestinationFolder: true
+
+  - task: AzureFunctionApp@2
+    inputs:
+      connectedServiceNameARM: 'Abo Devoir 2(dde5eab5-8f95-425b-b698-3a605a01ad88)'
+      appType: 'functionApp'
+      appName: '$(AzureFunctionAppName)'
+      deployToSlotOrASE: true
+      resourceGroupName: '$(resourceGroupName)'
+      slotName: 'production'
+      package: '$(Build.ArtifactStagingDirectory)/**/*.zip'
+      deploymentMethod: 'runFromPackage'
+      appSettings: '-Blob_ConnectionString $(blobstring) -Blob_ConnectionString__blob "https://$(AzureBlob).blob.core.windows.net/"'
