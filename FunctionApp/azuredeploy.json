@@ -97,6 +97,10 @@
             {
               "name": "WEBSITE_CONTENTSHARE",
               "value": "[variables('contentShare')]"
+            },
+            {
+              "name": "WEBSITE_RUN_FROM_PACKAGE",
+              "value": "1"
             }
           ],
           "cors": {
