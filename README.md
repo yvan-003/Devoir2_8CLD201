@@ -15,7 +15,7 @@ Ce projet vise à automatiser le traitement d'images en utilisant les services d
 - Déploiement automatisé avec Azure DevOps Pipelines.
 
 ## Prérequis
-Avant de commencer, assurez-vous d'avoir :
+Avant de commencer, s'assurez d'avoir :
 1. Un compte Azure actif.
 2. Un compte Azure DevOps.
 3. Les outils suivants installés localement :
@@ -26,7 +26,7 @@ Avant de commencer, assurez-vous d'avoir :
 ## Contributeurs
 
 - SEKA paul yvan : Gestion du projet, organisation du Board.
-- [Nom du membre 2] : Développement de la première Function App.
+- [Ruben Athino] : Développement de la première Function App.
 - [Nom du membre 3] : Développement de la deuxième Function App.
 - [Dona Peniel HOUNHOUI] : Configuration des pipelines CI/CD.
 
