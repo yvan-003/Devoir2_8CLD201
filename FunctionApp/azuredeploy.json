@@ -49,7 +49,7 @@
     }
   },
   "variables": {
-    "contentShare": "lefunctionappdevoir296ca"
+    "contentShare": "myfunctionappdevoir282f8"
   },
   "resources": [
     {
@@ -59,10 +59,10 @@
       "kind": "functionapp",
       "location": "[parameters('location')]",
       "tags": {
-        "hidden-link: /app-insights-resource-id": "/subscriptions/dde5eab5-8f95-425b-b698-3a605a01ad88/resourceGroups/RG_Devoir_2/providers/Microsoft.Insights/components/lefunctionappdevoir2"
+        "hidden-link: /app-insights-resource-id": "/subscriptions/dde5eab5-8f95-425b-b698-3a605a01ad88/resourceGroups/RG_Devoir_2/providers/Microsoft.Insights/components/myfunctionappdevoir2"
       },
       "dependsOn": [
-        "microsoft.insights/components/lefunctionappdevoir2",
+        "microsoft.insights/components/myfunctionappdevoir2",
         "[concat('Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]",
         "[concat('Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]"
       ],
@@ -84,7 +84,7 @@
             },
             {
               "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
-              "value": "[reference('microsoft.insights/components/lefunctionappdevoir2', '2015-05-01').ConnectionString]"
+              "value": "[reference('microsoft.insights/components/myfunctionappdevoir2', '2015-05-01').ConnectionString]"
             },
             {
               "name": "AzureWebJobsStorage",
@@ -99,8 +99,8 @@
               "value": "[variables('contentShare')]"
             },
             {
-              "name": "WEBSITE_RUN_FROM_PACKAGE",
-              "value": "1"
+              "name": "blobconnectionstring",
+              "value": "[reference('StorageAccountDeploymentName').outputs.blobstoragestring.value]"
             }
           ],
           "cors": {
@@ -125,7 +125,7 @@
           "apiVersion": "2022-09-01",
           "name": "[concat(parameters('name'), '/scm')]",
           "properties": {
-            "allow": false
+            "allow": true
           },
           "dependsOn": [
             "[resourceId('Microsoft.Web/Sites', parameters('name'))]"
@@ -136,7 +136,7 @@
           "apiVersion": "2022-09-01",
           "name": "[concat(parameters('name'), '/ftp')]",
           "properties": {
-            "allow": false
+            "allow": true
           },
           "dependsOn": [
             "[resourceId('Microsoft.Web/Sites', parameters('name'))]"
@@ -165,7 +165,7 @@
     },
     {
       "apiVersion": "2020-02-02-preview",
-      "name": "lefunctionappdevoir2",
+      "name": "myfunctionappdevoir2",
       "type": "microsoft.insights/components",
       "location": "canadacentral",
       "tags": {},
@@ -193,30 +193,6 @@
         "minimumTlsVersion": "TLS1_2",
         "defaultToOAuthAuthentication": true,
         "allowBlobPublicAccess": false
-      }
-    },
-    {
-      "apiVersion": "2021-05-01-preview",
-      "name": "[concat(parameters('storageAccountName'), '-sa-blob-logs')]",
-      "type": "microsoft.insights/diagnosticSettings",
-      "scope": "[concat('Microsoft.Storage/storageAccounts/', parameters('storageAccountName'), '/blobServices/default')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
-      ],
-      "properties": {
-        "workspaceId": "/subscriptions/dde5eab5-8f95-425b-b698-3a605a01ad88/resourceGroups/DefaultResourceGroup-CCAN/providers/Microsoft.OperationalInsights/workspaces/DefaultWorkspace-dde5eab5-8f95-425b-b698-3a605a01ad88-CCAN",
-        "logs": [
-          {
-            "category": "StorageWrite",
-            "enabled": true
-          }
-        ],
-        "metrics": [
-          {
-            "category": "Transaction",
-            "enabled": true
-          }
-        ]
       }
     }
   ]
