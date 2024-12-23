@@ -1,71 +1,38 @@
-# Pipeline de déploiement Azure pour déployer des ressources via des modèles ARM.
-
 trigger:
 - master
-# Le pipeline est déclenché automatiquement pour chaque modification dans la branche "master".
+# The pipeline is triggered for every change to the "master" branch.
 
 pool: "default"
-# Définit le pool d'agents par défaut pour exécuter les tâches du pipeline.
+# Specifies the default agent pool to execute tasks in the pipeline.
 
 variables:
   - name: resourceGroupName
     value: 'RG_Devoir_2'
-    # Nom du groupe de ressources où les ressources seront déployées.
-    
   - name: rgLocation
     value: 'Canada Central'
-    # Région géographique où le groupe de ressources et les ressources seront déployés.
-
   - name: AzureAppFunction
     value: 'function'
-    # Type d'application déployée (ici, une fonction Azure).
-
   - name: AzureFunctionAppName
     value: 'myfunctionappdevoir2'
-    # Nom de l'application Azure Functions.
 
 jobs:
 - job: StorageAccount
-  # Déclaration d’un job nommé "StorageAccount" pour gérer le déploiement de ressources Azure.
-  
+  displayName: 'Deploy Storage Account'
   steps:
   - task: AzureResourceManagerTemplateDeployment@3
-    # Première tâche pour déployer un modèle ARM pour un compte de stockage.
-
     inputs:
       deploymentScope: 'Resource Group'
-      # Le déploiement est limité au groupe de ressources défini.
-
       azureResourceManagerConnection: 'Abo Devoir 2(dde5eab5-8f95-425b-b698-3a605a01ad88)'
-      # Nom de la connexion au service Azure DevOps pour autoriser le déploiement.
-
       subscriptionId: 'dde5eab5-8f95-425b-b698-3a605a01ad88'
-      # Identifiant de la souscription Azure utilisée pour le déploiement.
-
       action: 'Create Or Update Resource Group'
-      # Action exécutée : création ou mise à jour du groupe de ressources.
-
       resourceGroupName: 'RG_Devoir_2'
-      # Groupe de ressources où les ressources seront déployées.
-
       location: 'Canada Central'
-      # Région du groupe de ressources.
-
       templateLocation: 'Linked artifact'
-      # Le modèle ARM est un artefact lié au pipeline.
-
       csmFile: '$(Build.SourcesDirectory)\StorageAccount\azuredeploy.json'
-      # Chemin vers le fichier de modèle ARM pour déployer un compte de stockage.
-
       csmParametersFile: '$(Build.SourcesDirectory)\StorageAccount\azuredeploy.parameters.json'
-      # Chemin vers le fichier des paramètres pour le modèle ARM.
-
       deploymentMode: 'Incremental'
-      # Mode de déploiement : seules les ressources non existantes ou mises à jour seront modifiées.
 
   - task: AzureResourceManagerTemplateDeployment@3
-    # Deuxième tâche pour déployer un modèle ARM pour une application Azure Functions.
-
     inputs:
       deploymentScope: 'Resource Group'
       azureResourceManagerConnection: 'Abo Devoir 2(dde5eab5-8f95-425b-b698-3a605a01ad88)'
@@ -75,33 +42,28 @@ jobs:
       location: 'Canada Central'
       templateLocation: 'Linked artifact'
       csmFile: '$(Build.SourcesDirectory)\FunctionApp\azuredeploy.json'
-      # Chemin vers le fichier de modèle ARM pour l'application Azure Functions.
-
       csmParametersFile: '$(Build.SourcesDirectory)\FunctionApp\azuredeploy.parameters.json'
-      # Chemin vers le fichier des paramètres pour ce modèle ARM.
-
       deploymentMode: 'Incremental'
-      # Mode de déploiement incrémental pour éviter les changements inutiles.
 
 - job: FunctionBuild
-  displayName: Function Build
-
+  displayName: 'Build Azure Function'
+  dependsOn: StorageAccount
   steps:
   - task: DotNetCoreCLI@2
-    displayName: Restore Project
+    displayName: 'Restore Project'
     inputs:
       command: 'restore'
       projects: '$(Build.SourcesDirectory)/$(AzureAppFunction)/*.csproj'
       
   - task: DotNetCoreCLI@2
-    displayName: Build Azure Function
+    displayName: 'Build Azure Function'
     inputs:
       command: 'build'
       projects: '$(Build.SourcesDirectory)/$(AzureAppFunction)/*.csproj'
       arguments: '--configuration Release --output $(Build.BinariesDirectory)'
 
   - task: DotNetCoreCLI@2
-    displayName: Publish Azure Function
+    displayName: 'Publish Azure Function'
     inputs:
       command: 'publish'
       projects: '$(Build.SourcesDirectory)/$(AzureAppFunction)/*.csproj'
@@ -117,9 +79,8 @@ jobs:
       publishLocation: 'Container'
 
 - job: FunctionDeploy
-  displayName: Function Deployment
+  displayName: 'Deploy Azure Function'
   dependsOn: FunctionBuild
-
   steps:
   - checkout: none
   - task: DownloadBuildArtifacts@1
@@ -132,11 +93,11 @@ jobs:
 
   - task: AzureFunctionApp@2
     inputs:
-      connectedServiceNameARM: 'Abo Devoir 2(dde5eab5-8f95-425b-b698-3a605a01ad88)'  # Vérifie la connexion Azure
+      connectedServiceNameARM: 'Abo Devoir 2(dde5eab5-8f95-425b-b698-3a605a01ad88)'
       appType: 'functionApp'
       appName: '$(AzureFunctionAppName)'
       deployToSlotOrASE: true
       resourceGroupName: '$(resourceGroupName)'
-      slotName: 'production'  # Slot de déploiement, peut être ajusté si nécessaire
+      slotName: 'production'
       package: '$(System.ArtifactsDirectory)/drop/**/*.zip'
       deploymentMethod: 'runFromPackage'
