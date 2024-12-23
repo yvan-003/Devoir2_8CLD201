@@ -2,14 +2,6 @@
   "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "serviceBusNamespace": {
-      "type": "string",
-      "defaultValue": "SBNamespaceDevoir2"
-    },
-    "serviceBusSharedAccessKeyName": {
-      "type": "string",
-      "defaultValue": "AccessPolicy"
-    },
     "subscriptionId": {
       "type": "string"
     },
@@ -54,6 +46,12 @@
     },
     "alwaysOn": {
       "type": "bool"
+    },
+    "serviceBusNamespace": {
+      "type": "string"
+    },
+    "serviceBusSharedAccessKeyName": {
+      "type": "string"
     }
   },
   "variables": {

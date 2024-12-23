@@ -46,6 +46,12 @@
     },
     "alwaysOn": {
       "value": false
+    },
+    "serviceBusNamespace": {
+      "value": "SBNamespaceDevoir2"
+    },
+    "serviceBusSharedAccessKeyName": {
+      "value": "AccessPolicy"
     }
   }
 }
