@@ -7,7 +7,7 @@ Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "StorageAccount", "StorageAc
 EndProject
 Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "FunctionApp", "FunctionApp\FunctionApp.deployproj", "{52EF0CEA-D96D-407B-9606-D6CF9D23C086}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyFunctionApp", "MyFunctionApp\MyFunctionApp.csproj", "{4634AF2B-AC4B-4AA8-A41F-25FE8A2BDE48}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "function", "function\function.csproj", "{2D6C8A75-5DD9-494F-A717-3933B9139782}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{52EF0CEA-D96D-407B-9606-D6CF9D23C086}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52EF0CEA-D96D-407B-9606-D6CF9D23C086}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52EF0CEA-D96D-407B-9606-D6CF9D23C086}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4634AF2B-AC4B-4AA8-A41F-25FE8A2BDE48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4634AF2B-AC4B-4AA8-A41F-25FE8A2BDE48}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4634AF2B-AC4B-4AA8-A41F-25FE8A2BDE48}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4634AF2B-AC4B-4AA8-A41F-25FE8A2BDE48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D6C8A75-5DD9-494F-A717-3933B9139782}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D6C8A75-5DD9-494F-A717-3933B9139782}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D6C8A75-5DD9-494F-A717-3933B9139782}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D6C8A75-5DD9-494F-A717-3933B9139782}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
