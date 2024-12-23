@@ -100,7 +100,7 @@
             },
             {
               "name": "blobconnectionstring",
-              "value": "[reference('StorageAccountDeploymentName').outputs.blobstoragestring.value]"
+              "value": "[reference('8cld201storagedevoir2').outputs.blobstoragestring.value]"
             }
           ],
           "cors": {
