@@ -100,7 +100,7 @@
             },
             {
               "name": "blobconnectionstring",
-              "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', '8cld201storagedevoir2')).outputs.blobstoragestring.value]"
+              "value": "[reference(resourceId('Microsoft.Storage/storageAccounts/8cld201storagedevoir2', '2021-04-01')).outputs.blobstoragestring.value]"
             }
           ],
           "cors": {
