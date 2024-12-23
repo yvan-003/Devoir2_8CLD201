@@ -1,17 +1,23 @@
-using System.IO;
-using System.Threading.Tasks;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
+using Azure.Messaging.ServiceBus;
 
 namespace function
 {
     public class Function1
     {
         private readonly ILogger<Function1> _logger;
+        private readonly ServiceBusClient _serviceBusClient;
+        private readonly ServiceBusSender _serviceBusSender;
 
         public Function1(ILogger<Function1> logger)
         {
             _logger = logger;
+
+            // Récupérer la chaîne de connexion depuis les variables d'environnement
+            string serviceBusConnectionString = Environment.GetEnvironmentVariable("servicebusconnectionstring");
+            _serviceBusClient = new ServiceBusClient(serviceBusConnectionString);
+            _serviceBusSender = _serviceBusClient.CreateSender("devoirmessagequeue");
         }
 
         [Function(nameof(Function1))]
@@ -19,7 +25,12 @@ namespace function
         {
             using var blobStreamReader = new StreamReader(stream);
             var content = await blobStreamReader.ReadToEndAsync();
-            _logger.LogInformation($"C# Blob trigger function Processed blob\n Name: {name} \n Data: {content}");
+            _logger.LogInformation($"C# Blob trigger function processed blob\n Name: {name} \n Data: {content}");
+
+            // Envoyer le nom du fichier à la queue Azure Service Bus
+            var message = new ServiceBusMessage(name);
+            await _serviceBusSender.SendMessageAsync(message);
+            _logger.LogInformation($"Message sent to Service Bus queue: {name}");
         }
     }
 }
