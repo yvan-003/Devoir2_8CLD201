@@ -100,7 +100,7 @@
             },
             {
               "name": "blobconnectionstring",
-              "value": "[reference('Microsoft.Storage/storageAccounts/8cld201storagedevoir2', '2021-04-01').outputs.blobstoragestring.value]"
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2019-06-01').keys[0].value,';EndpointSuffix=','core.windows.net')]"
             }
           ],
           "cors": {
