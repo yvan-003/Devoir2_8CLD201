@@ -2,6 +2,14 @@
   "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "serviceBusNamespace": {
+      "type": "string",
+      "defaultValue": "SBNamespaceDevoir2"
+    },
+    "serviceBusSharedAccessKeyName": {
+      "type": "string",
+      "defaultValue": "AccessPolicy"
+    },
     "subscriptionId": {
       "type": "string"
     },
@@ -101,6 +109,10 @@
             {
               "name": "blobconnectionstring",
               "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2019-06-01').keys[0].value,';EndpointSuffix=','core.windows.net')]"
+            },
+            {
+              "name": "servicebusconnectionstring",
+              "value": "[concat('Endpoint=sb://', parameters('serviceBusNamespace'), '.servicebus.windows.net/;SharedAccessKeyName=', parameters('serviceBusSharedAccessKeyName'), ';SharedAccessKey=', listKeys(resourceId('Microsoft.ServiceBus/namespaces', parameters('serviceBusNamespace')), '2017-04-01').keys[0].value)]"
             }
           ],
           "cors": {
