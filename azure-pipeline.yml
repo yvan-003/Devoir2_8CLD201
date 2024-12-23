@@ -101,4 +101,4 @@ jobs:
       slotName: 'production'
       package: '$(System.ArtifactsDirectory)/drop/**/*.zip'
       deploymentMethod: 'runFromPackage'
-      appSettings: '-blobconnectionString $(blobstring) -blobonnectionstring__blob "https://$(AzureBlob).blob.core.windows.net/"'
+      appSettings: '-blobconnectionstring $(blobstring) -blobonnectionstring__blob "https://$(AzureBlob).blob.core.windows.net/"'
