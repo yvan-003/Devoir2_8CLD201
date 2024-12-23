@@ -2,7 +2,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using Azure.Messaging.ServiceBus;
 
-namespace function
+namespace alertefichier
 {
     public class Function1
     {
