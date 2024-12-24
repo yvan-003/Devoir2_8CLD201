@@ -4,25 +4,25 @@ using Azure.Messaging.ServiceBus;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 
-namespace operationfichier
+namespace OperationFichier
 {
-    public class operationfichier
+    public class OperationFichier
     {
-        private readonly ILogger<operationfichier> _logger;
+        private readonly ILogger<OperationFichier> _logger;
 
-        public Function1(ILogger<operationfichier> logger)
+        public OperationFichier(ILogger<OperationFichier> logger)
         {
             _logger = logger;
         }
 
-        [Function(nameof(Function1))]
+        [Function(nameof(OperationFichier))]
         public async Task Run(
             [ServiceBusTrigger("devoirmessagequeue", Connection = "servicebusconnectionstring")]
             ServiceBusReceivedMessage message,
             ServiceBusMessageActions messageActions)
         {
             _logger.LogInformation("Message ID: {id}", message.MessageId);
-            _logger.LogInformation("Message Body: {body}", message.Body);
+            _logger.LogInformation("Message Body: {body}", message.Body.ToString());
             _logger.LogInformation("Message Content-Type: {contentType}", message.ContentType);
 
             // Complete the message
