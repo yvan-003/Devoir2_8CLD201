@@ -1,32 +1,37 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
-using Microsoft.Azure.Functions.Worker;
-using Microsoft.Extensions.Logging;
 
 namespace operationfichier
 {
-    public class Function1
+    class Program
     {
-        private readonly ILogger<Function1> _logger;
+        private const string connectionString = "servicebusconnectionstring";
+        private const string queueName = "devoirmessagequeue";
 
-        public Function1(ILogger<Function1> logger)
+        static async Task Main(string[] args)
         {
-            _logger = logger;
-        }
+            Console.WriteLine("Start : " + DateTime.Now.ToString());
 
-        [Function(nameof(Function1))]
-        public async Task Run(
-            [ServiceBusTrigger("devoirmessagequeue", Connection = "servicebusconnectionstring")]
-            ServiceBusReceivedMessage message,
-            ServiceBusMessageActions messageActions)
-        {
-            _logger.LogInformation("Message ID: {id}", message.MessageId);
-            _logger.LogInformation("Message Body: {body}", message.Body);
-            _logger.LogInformation("Message Content-Type: {contentType}", message.ContentType);
+            // Créer le client de la file d'attente
+            ServiceBusClient client = new ServiceBusClient(connectionString);
+            ServiceBusSender sender = client.CreateSender(queueName);
 
-            // Complete the message
-            await messageActions.CompleteMessageAsync(message);
+            // Envoyer un message à la file d'attente
+            string messageBody = "Hello, Azure Service Bus!";
+            ServiceBusMessage message = new ServiceBusMessage(messageBody);
+            await sender.SendMessageAsync(message);
+            Console.WriteLine($"Message sent: {messageBody}");
+
+            // Recevoir le message de la file d'attente
+            ServiceBusReceiver receiver = client.CreateReceiver(queueName);
+            ServiceBusReceivedMessage receivedMessage = await receiver.ReceiveMessageAsync();
+            Console.WriteLine($"Message received: {receivedMessage.Body}");
+
+            // Compléter le message pour le supprimer de la file d'attente
+            await receiver.CompleteMessageAsync(receivedMessage);
+            Console.WriteLine("Message completed.");
+            Console.ReadLine();
         }
     }
 }
