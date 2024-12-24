@@ -18,7 +18,8 @@ namespace OperationFichier
         [Function(nameof(OperationFichier))]
         public async Task Run(
             [ServiceBusTrigger("devoirmessagequeue", Connection = "servicebusconnectionstring")]
-            ServiceBusReceivedMessage message)
+            ServiceBusReceivedMessage message,
+            ServiceBusMessageActions messageActions)
         {
             _logger.LogInformation("Message ID: {id}", message.MessageId);
             _logger.LogInformation("Message Body: {body}", message.Body.ToString());
