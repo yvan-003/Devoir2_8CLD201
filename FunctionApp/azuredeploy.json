@@ -99,7 +99,7 @@
               "value": "[variables('contentShare')]"
             },
             {
-              "name": "blobconnectionstring",
+              "name": "blobconnectionstring", // Lien du conteneur qui contient le blob
               "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2019-06-01').keys[0].value,';EndpointSuffix=','core.windows.net')]"
             }
           ],
