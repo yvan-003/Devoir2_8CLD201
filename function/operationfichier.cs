@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Extensions.ServiceBus;
 using Microsoft.Extensions.Logging;
 
 namespace operationfichier
