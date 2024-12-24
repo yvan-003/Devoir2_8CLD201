@@ -39,7 +39,7 @@
   <!-- Inclure les deux fonctions dans le projet -->
   <ItemGroup>
     <Function Include="alertefichier.cs" />
-    <Function Include="operationfichier.cs" />
+    
   </ItemGroup>
 
 </Project>
