@@ -5,18 +5,18 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.WebJobs.ServiceBus;
 using Microsoft.Extensions.Logging;
 
-namespace function2
+namespace operationfichier
 {
-    public class Function1
+    public class operationfichier
     {
-        private readonly ILogger<Function1> _logger;
+        private readonly ILogger<operationfichier> _logger;
 
-        public Function1(ILogger<Function1> logger)
+        public Function1(ILogger<operationfichier> logger)
         {
             _logger = logger;
         }
 
-        [Function(nameof(Function1))]
+        [Function(nameof(operationfichier))]
         public async Task Run(
             [ServiceBusTrigger("devoirmessagequeue", Connection = "servicebusconnectionstring")]
             ServiceBusReceivedMessage message,

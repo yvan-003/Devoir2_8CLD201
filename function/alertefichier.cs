@@ -4,13 +4,13 @@ using Azure.Messaging.ServiceBus;
 
 namespace alertefichier
 {
-    public class Function1
+    public class alertefichier
     {
-        private readonly ILogger<Function1> _logger;
+        private readonly ILogger<alertefichier> _logger;
         private readonly ServiceBusClient _serviceBusClient;
         private readonly ServiceBusSender _serviceBusSender;
 
-        public Function1(ILogger<Function1> logger)
+        public Function1(ILogger<alertefichier> logger)
         {
             _logger = logger;
 
@@ -20,7 +20,7 @@ namespace alertefichier
             _serviceBusSender = _serviceBusClient.CreateSender("devoirmessagequeue");
         }
 
-        [Function(nameof(Function1))]
+        [Function(nameof(alertefichier))]
         public async Task Run([BlobTrigger("blob-fichiers-images/{name}", Connection = "blobconnectionstring")] Stream stream, string name)
         {
             using var blobStreamReader = new StreamReader(stream);
