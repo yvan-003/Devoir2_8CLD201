@@ -7,16 +7,16 @@ using Microsoft.Extensions.Logging;
 
 namespace operationfichier
 {
-    public class operationfichier
+    public class Function1
     {
-        private readonly ILogger<operationfichier> _logger;
+        private readonly ILogger<Function1> _logger;
 
-        public Function1(ILogger<operationfichier> logger)
+        public Function1(ILogger<Function1> logger)
         {
             _logger = logger;
         }
 
-        [Function(nameof(operationfichier))]
+        [Function(nameof(Function1))]
         public async Task Run(
             [ServiceBusTrigger("devoirmessagequeue", Connection = "servicebusconnectionstring")]
             ServiceBusReceivedMessage message,
