@@ -13,10 +13,7 @@ namespace alertefichier
         public Function1(ILogger<Function1> logger)
         {
             _logger = logger;
-
-            // Récupérer la chaîne de connexion depuis les variables d'environnement
-            string serviceBusConnectionString = Environment.GetEnvironmentVariable("servicebusconnectionstring");
-            _serviceBusClient = new ServiceBusClient(serviceBusConnectionString);
+            _serviceBusClient = new ServiceBusClient("servicebusconnectionstring");
             _serviceBusSender = _serviceBusClient.CreateSender("devoirmessagequeue");
         }
 
