@@ -1,9 +1,9 @@
 trigger:
 - master
-# The pipeline is triggered for every change to the "master" branch.
+# Le pipeline est déclenché pour chaque changement dans la branche "master".
 
 pool: "default"
-# Specifies the default agent pool to execute tasks in the pipeline.
+# Spécifie le pool d'agents par défaut pour exécuter les tâches du pipeline.
 
 variables:
   - name: resourceGroupName
@@ -14,10 +14,12 @@ variables:
     value: 'function'
   - name: AzureFunctionAppName
     value: 'myfunctionappdevoir2'
+# Déclare des variables utilisées dans le pipeline, telles que le nom du groupe de ressources, la localisation, et le nom de l'application de fonction Azure.
 
 jobs:
 - job: StorageAccount
   displayName: 'Deploy Storage Account'
+  # Tâche qui déploie le compte de stockage dans Azure.
   steps:
   - task: AzureResourceManagerTemplateDeployment@3
     inputs:
@@ -31,6 +33,7 @@ jobs:
       csmFile: '$(Build.SourcesDirectory)\StorageAccount\azuredeploy.json'
       csmParametersFile: '$(Build.SourcesDirectory)\StorageAccount\azuredeploy.parameters.json'
       deploymentMode: 'Incremental'
+    # Déploie un modèle de ressource ARM pour le compte de stockage dans le groupe de ressources spécifié.
 
   - task: AzureResourceManagerTemplateDeployment@3
     inputs:
@@ -44,23 +47,27 @@ jobs:
       csmFile: '$(Build.SourcesDirectory)\FunctionApp\azuredeploy.json'
       csmParametersFile: '$(Build.SourcesDirectory)\FunctionApp\azuredeploy.parameters.json'
       deploymentMode: 'Incremental'
+    # Déploie un modèle de ressource ARM pour l'application de fonction dans le même groupe de ressources.
 
 - job: FunctionBuild
   displayName: 'Build Azure Function'
   dependsOn: StorageAccount
+  # Cette tâche dépend du job de déploiement du compte de stockage.
   steps:
   - task: DotNetCoreCLI@2
     displayName: 'Restore Project'
     inputs:
       command: 'restore'
       projects: '$(Build.SourcesDirectory)/$(AzureAppFunction)/*.csproj'
-      
+    # Restaure les dépendances du projet .NET Core.
+
   - task: DotNetCoreCLI@2
     displayName: 'Build Azure Function'
     inputs:
       command: 'build'
       projects: '$(Build.SourcesDirectory)/$(AzureAppFunction)/*.csproj'
       arguments: '--configuration Release --output $(Build.BinariesDirectory)'
+    # Compile l'application de fonction Azure.
 
   - task: DotNetCoreCLI@2
     displayName: 'Publish Azure Function'
@@ -71,18 +78,23 @@ jobs:
       publishWebProjects: false
       zipAfterPublish: true
       modifyOutputPath: false
-      
+    # Publie l'application de fonction et la prépare pour le déploiement, y compris la création d'un fichier ZIP.
+
   - task: PublishBuildArtifacts@1
     inputs:
       PathtoPublish: '$(Build.ArtifactStagingDirectory)'
       ArtifactName: 'drop'
       publishLocation: 'Container'
+    # Publie les artefacts de la build pour les utiliser lors du déploiement dans une autre tâche.
 
 - job: FunctionDeploy
   displayName: 'Deploy Azure Function'
   dependsOn: FunctionBuild
+  # Cette tâche dépend du job de build de l'application de fonction.
   steps:
   - checkout: none
+    # Aucun code n'est récupéré ici, car les artefacts ont déjà été téléchargés.
+
   - task: DownloadBuildArtifacts@1
     inputs:
       buildType: 'current'
@@ -90,6 +102,7 @@ jobs:
       artifactName: 'drop'
       downloadPath: '$(System.ArtifactsDirectory)'
       cleanDestinationFolder: true
+    # Télécharge les artefacts de build générés précédemment.
 
   - task: AzureFunctionApp@2
     inputs:
@@ -102,3 +115,5 @@ jobs:
       package: '$(System.ArtifactsDirectory)/drop/**/*.zip'
       deploymentMethod: 'runFromPackage'
       appSettings: '-blobconnectionstring $(blobstring) -blobonnectionstring__blob "https://$(AzureBlob).blob.core.windows.net/" -servicebusconnectionstring $(servicebusconnectionstring)'
+    # Déploie l'application de fonction Azure dans l'environnement de production à partir des artefacts téléchargés.
+    # Les paramètres d'application (comme les chaînes de connexion) sont définis ici.
