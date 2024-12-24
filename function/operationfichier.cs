@@ -2,34 +2,32 @@ using System;
 using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.WebJobs.ServiceBus;
 using Microsoft.Extensions.Logging;
 
-namespace OperationFichier
+namespace function2
 {
-    public class OperationFichier
+    public class Function1
     {
-        private readonly ILogger<OperationFichier> _logger;
+        private readonly ILogger<Function1> _logger;
 
-        public OperationFichier(ILogger<OperationFichier> logger)
+        public Function1(ILogger<Function1> logger)
         {
             _logger = logger;
         }
 
-        [Function(nameof(OperationFichier))]
+        [Function(nameof(Function1))]
         public async Task Run(
-    [ServiceBusTrigger("devoirmessagequeue", Connection = "servicebusconnectionstring")]
-    ServiceBusReceivedMessage message,
-    FunctionContext context)
-{
-    var messageActions = context.GetServiceBusMessageActions();
+            [ServiceBusTrigger("devoirmessagequeue", Connection = "servicebusconnectionstring")]
+            ServiceBusReceivedMessage message,
+            ServiceBusMessageActions messageActions)
+        {
+            _logger.LogInformation("Message ID: {id}", message.MessageId);
+            _logger.LogInformation("Message Body: {body}", message.Body);
+            _logger.LogInformation("Message Content-Type: {contentType}", message.ContentType);
 
-    _logger.LogInformation("Message ID: {id}", message.MessageId);
-    _logger.LogInformation("Message Body: {body}", message.Body.ToString());
-    _logger.LogInformation("Message Content-Type: {contentType}", message.ContentType);
-
-    // Complete the message
-    await messageActions.CompleteMessageAsync(message);
-}
-
+            // Complete the message
+            await messageActions.CompleteMessageAsync(message);
+        }
     }
 }

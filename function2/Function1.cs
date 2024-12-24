@@ -4,7 +4,7 @@ using Azure.Messaging.ServiceBus;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 
-namespace functionoperationfichier
+namespace function2
 {
     public class Function1
     {
